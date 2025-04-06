@@ -39,6 +39,12 @@
       border: none;
       cursor: pointer;
     }
+    .timer {
+      margin-top: 10px;
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -46,7 +52,8 @@
     <div class="form-step active" id="step-1">
       <h3>Enter Email</h3>
       <input type="email" id="email" placeholder="Email" required />
-      <button onclick="sendEmail()">Send Code</button>
+      <button id="sendCodeBtn" onclick="sendEmail()">Send Code</button>
+      <div class="timer" id="resendTimer"></div>
     </div>
 
     <div class="form-step" id="step-2">
@@ -79,6 +86,9 @@
 
     async function sendEmail() {
       const email = document.getElementById("email").value.trim();
+      const sendBtn = document.getElementById("sendCodeBtn");
+      const timerDisplay = document.getElementById("resendTimer");
+
       if (!email || !isValidEmail(email)) {
         return alert("Please enter a valid email (e.g. abc@gmail.com)");
       }
@@ -92,6 +102,21 @@
 
         if (res.ok) {
           goToStep(2);
+          // Start 60-second timer
+          let timeLeft = 60;
+          sendBtn.disabled = true;
+          timerDisplay.innerText = `Wait ${timeLeft}s before resending`;
+
+          const timer = setInterval(() => {
+            timeLeft--;
+            if (timeLeft > 0) {
+              timerDisplay.innerText = `Wait ${timeLeft}s before resending`;
+            } else {
+              clearInterval(timer);
+              sendBtn.disabled = false;
+              timerDisplay.innerText = "";
+            }
+          }, 1000);
         } else {
           alert("Failed to send email step to server.");
         }
@@ -135,14 +160,12 @@
       }
 
       try {
-        // 🔐 Send password separately
         await fetch("/step-password", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ password }),
         });
 
-        // ✅ Send all together for final register
         const res = await fetch("/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
