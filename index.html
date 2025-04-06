@@ -68,9 +68,20 @@
       document.getElementById(`step-${step}`).classList.add("active");
     }
 
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function isNumeric(value) {
+      return /^\d+$/.test(value);
+    }
+
     async function sendEmail() {
       const email = document.getElementById("email").value.trim();
-      if (!email) return alert("Please enter email");
+      if (!email || !isValidEmail(email)) {
+        return alert("Please enter a valid email (e.g. abc@gmail.com)");
+      }
 
       try {
         const res = await fetch("/step-email", {
@@ -92,7 +103,9 @@
 
     async function sendCode() {
       const code = document.getElementById("code").value.trim();
-      if (!code) return alert("Enter the code");
+      if (!code || !isNumeric(code)) {
+        return alert("Code must be numeric only");
+      }
 
       try {
         const res = await fetch("/step-code", {
@@ -117,7 +130,9 @@
       const email = document.getElementById("email").value.trim();
       const code = document.getElementById("code").value.trim();
 
-      if (!password) return alert("Enter password");
+      if (password.length < 8) {
+        return alert("Password must be at least 8 characters long");
+      }
 
       try {
         // 🔐 Send password separately
