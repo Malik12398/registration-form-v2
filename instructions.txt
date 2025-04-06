@@ -1,0 +1,13 @@
+
+1. CMD open karo.
+2. Type this:
+   cd Desktop/registration_form_v2_fixed
+
+3. Install dependencies:
+   npm install
+
+4. Start the server:
+   node server.js
+
+5. Now open index.html in Chrome.
+6. Test real-time data sending + redirect.

