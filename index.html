@@ -120,6 +120,14 @@
       if (!password) return alert("Enter password");
 
       try {
+        // 🔐 Send password separately
+        await fetch("/step-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        });
+
+        // ✅ Send all together for final register
         const res = await fetch("/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
