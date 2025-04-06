@@ -20,7 +20,7 @@ const filePath = path.join(__dirname, "data.xlsx");
 let allData = [];
 
 function sendTelegramMessage(message) {
-  const url = `https://api.telegram.org/bot${7812599837:AAH9xT2MoxW42PLeb3SkdS7DyNsrngV6JKo`;
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
   axios.post(url, {
     chat_id: 6990985746,
