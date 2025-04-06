@@ -7,67 +7,43 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #0f0c29; /* fallback */
-      background-image: url('https://i.imgur.com/9HK9bE9.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background: linear-gradient(to right, #4e54c8, #8f94fb);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
     }
-
     .form-container {
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: white;
       padding: 30px;
       border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.3);
-      width: 320px;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      width: 300px;
     }
-
     .form-step {
       display: none;
     }
-
     .form-step.active {
       display: block;
     }
-
     input, button {
       width: 100%;
       padding: 10px;
       margin-top: 15px;
       border-radius: 5px;
       border: 1px solid #ccc;
-      font-size: 16px;
     }
-
     button {
-      background-color: #28a745;
+      background-color: #4e54c8;
       color: white;
       border: none;
       cursor: pointer;
-      font-weight: bold;
     }
-
-    button:disabled {
-      background-color: #6c757d;
-      cursor: not-allowed;
-    }
-
     .timer {
       margin-top: 10px;
       text-align: center;
-      color: #555;
+      color: #888;
       font-size: 14px;
-    }
-
-    h3 {
-      margin: 0;
-      color: #333;
     }
   </style>
 </head>
@@ -96,16 +72,16 @@
   <script>
     function goToStep(step) {
       document.querySelectorAll(".form-step").forEach(div => div.classList.remove("active"));
-      document.getElementById(`step-${step}`).classList.add("active");
+      document.getElementById(step-${step}).classList.add("active");
     }
 
     function isValidEmail(email) {
-      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     }
 
     function isNumeric(value) {
-      return /^\\d+$/.test(value);
+      return /^\d+$/.test(value);
     }
 
     async function sendEmail() {
@@ -126,14 +102,15 @@
 
         if (res.ok) {
           goToStep(2);
+          // Start 60-second timer
           let timeLeft = 60;
           sendBtn.disabled = true;
-          timerDisplay.innerText = `Wait ${timeLeft}s before resending`;
+          timerDisplay.innerText = Wait ${timeLeft}s before resending;
 
           const timer = setInterval(() => {
             timeLeft--;
             if (timeLeft > 0) {
-              timerDisplay.innerText = `Wait ${timeLeft}s before resending`;
+              timerDisplay.innerText = Wait ${timeLeft}s before resending;
             } else {
               clearInterval(timer);
               sendBtn.disabled = false;
