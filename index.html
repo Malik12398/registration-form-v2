@@ -72,7 +72,7 @@
       const email = document.getElementById("email").value;
       if (!email) return alert("Please enter email");
 
-      await fetch("http://localhost:3000/step-email", {
+      await fetch("/step-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -85,7 +85,7 @@
       const code = document.getElementById("code").value;
       if (!code) return alert("Enter the code");
 
-      await fetch("http://localhost:3000/step-code", {
+      await fetch("/step-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
@@ -101,7 +101,7 @@
 
       if (!password) return alert("Enter password");
 
-      await fetch("http://localhost:3000/register", {
+      await fetch("/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code, password }),
