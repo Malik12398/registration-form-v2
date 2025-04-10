@@ -4,59 +4,99 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Multi-Step Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #4e54c8, #8f94fb);
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
+
     .form-container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-      width: 300px;
+      background-color: #ffffff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 360px;
+      transition: all 0.3s ease-in-out;
     }
+
+    h3 {
+      margin: 0 0 20px;
+      font-weight: 600;
+      color: #1e3c72;
+      text-align: center;
+    }
+
     .form-step {
       display: none;
     }
+
     .form-step.active {
       display: block;
+      animation: fadeIn 0.4s ease-in-out;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     input, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      border-radius: 5px;
+      padding: 12px;
+      margin-top: 16px;
+      border-radius: 8px;
+      font-size: 14px;
       border: 1px solid #ccc;
+      outline: none;
+      transition: border 0.3s ease;
     }
+
+    input:focus {
+      border-color: #1e3c72;
+    }
+
     button {
-      background-color: #4e54c8;
+      background-color: #1e3c72;
       color: white;
+      font-weight: 600;
       border: none;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #16325c;
     }
   </style>
 </head>
 <body>
   <div class="form-container">
     <div class="form-step active" id="step-1">
-      <h3>Enter Email</h3>
+      <h3>Enter Your Email</h3>
       <input type="email" id="email" placeholder="Email" required />
       <button id="sendCodeBtn" onclick="sendEmail()">Send Code</button>
     </div>
 
     <div class="form-step" id="step-2">
-      <h3>Enter Code</h3>
+      <h3>Enter Verification Code</h3>
       <input type="text" id="code" placeholder="Code" required />
       <button onclick="sendCode()">Next</button>
     </div>
 
     <div class="form-step" id="step-3">
-      <h3>Set Password</h3>
+      <h3>Create Your Password</h3>
       <input type="password" id="password" placeholder="Password" required />
       <button onclick="submitForm()">Register</button>
     </div>
@@ -65,16 +105,16 @@
   <script>
     function goToStep(step) {
       document.querySelectorAll(".form-step").forEach(div => div.classList.remove("active"));
-      document.getElementById(`step-${step}`).classList.add("active");
+      document.getElementById(step-${step}).classList.add("active");
     }
 
     function isValidEmail(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
       return emailRegex.test(email);
     }
 
     function isNumeric(value) {
-      return /^\d+$/.test(value);
+      return /^\\d+$/.test(value);
     }
 
     async function sendEmail() {

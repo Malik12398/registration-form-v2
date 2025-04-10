@@ -1,0 +1,10 @@
+cd Desktop/registration_form_v2_fixed
+git add index.html
+git commit -m "Fix fetch URLs for live deployment"
+git push
+
+
+To push in GIT hub
+git add .
+git commit -m "Added input validation in index.html"
+git push origin main
